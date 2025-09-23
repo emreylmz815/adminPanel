@@ -1,0 +1,69 @@
+﻿@model WebApplication1.Models.UrunlerViewModel
+@{
+    ViewBag.Title = "Ürünler";
+    Layout = "~/Areas/admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class="content-wrapper">
+    <div class="container">
+        <h2>Ürünler Form Sayfası</h2>
+
+        @using (Html.BeginForm("Kaydet", "Urunler", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            @* Güncellemede id’yi kaybetmemek için *@
+            @Html.HiddenFor(m => m.id)
+
+            <table class="table table-hover bg-white">
+                <tr>
+                    <td>Başlık</td>
+                    <td>
+                        @Html.TextBoxFor(m => m.baslik, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.baslik)
+                    </td>
+                </tr>
+                <tr>
+                    <td>Üst Başlık</td>
+                    <td>
+                        @Html.TextBoxFor(m => m.ustbaslik, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.ustbaslik)
+                    </td>
+                </tr>
+                <tr>
+                    <td>İçerik</td>
+                    <td>
+                        @Html.TextAreaFor(m => m.icerik, new { @class = "form-control", rows = 6 })
+                        @Html.ValidationMessageFor(m => m.icerik)
+                    </td>
+                </tr>
+                <tr>
+                    <td>Sıra</td>
+                    <td>
+                        @Html.TextBoxFor(m => m.sira, new { @class = "form-control", type = "number" })
+                        @Html.ValidationMessageFor(m => m.sira)
+                    </td>
+                </tr>
+               
+                <tr>
+                    <td>Fotoğraf</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(Model?.foto))
+                        {
+                            <img src="~/Content/img/@Model.foto" width="200" />
+                        }
+
+                        @* ÖNEMLİ: name tam olarak 'fotoFile' olmalı *@
+                        <input type="file" name="fotoFile" />
+
+                        @if (ViewBag.HataFoto != null)
+                        {
+                            <div class="text-danger">@ViewBag.HataFoto</div>
+                        }
+                    </td>
+                </tr>
+            </table>
+
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+        }
+    </div>
+</div>

@@ -1,0 +1,93 @@
+﻿@model WebApplication1.Models.KullaniciViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<style>
+    .field-validation-error {
+        color: red;
+    }
+</style>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>KUACE PANEL | GİRİŞ</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet" href="~/Content/admin/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="~/Content/admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <link rel="stylesheet" href="~/Content/admin/dist/css/adminlte.min.css">
+</head>
+
+<body class="hold-transition login-page">
+
+
+
+    <div class="login-box">
+        <div class="login-logo">
+            <a><b>KUACE</b>PANEL</a>
+        </div>
+
+        <div class="card">
+            <div class="card-body login-card-body">
+                <p class="login-box-msg">Admin Paneline Erişmek İçin Giriş Yapınız.</p>
+
+                @using (Html.BeginForm("GirisYap", "login", new {ReturnUrl=Request.QueryString["ReturnUrl"],  FormMethod.Post }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="input-group mb-3">
+
+                        @Html.TextBoxFor(m => m.ad, new { @class = "form-control", placeholder = "Kullanıcı Adı", @id = "username" })
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                            </div>
+                        </div>
+                    </div>
+                    @Html.ValidationMessageFor(m => m.ad);
+                    <div class="input-group mb-3">
+
+                        @Html.PasswordFor(m => m.sifre, new { @class = "form-control", placeholder = "Parola", @id = "password" })
+
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+                    @Html.ValidationMessageFor(m => m.sifre);
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="icheck-primary">
+                                 
+                                <label  >
+                                    @Html.CheckBoxFor(m=>m.BeniHatirla) Beni Hatırla
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-primary btn-block" id="loginButton">Giriş</button>
+                        </div>
+                        <div class="col-8">
+                            @if (ViewBag.ErrorMessage != null)
+                            {
+                                <div class="alert alert-danger">
+                                    <strong>Hata!</strong> Kullanıcı adı veya şifre hatalı.
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+    <script src="~/Content/admin/plugins/jquery/jquery.min.js"></script>
+    <script src="~/Content/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Content/admin/dist/js/adminlte.min.js"></script>
+
+</body>
+</html>
+
+

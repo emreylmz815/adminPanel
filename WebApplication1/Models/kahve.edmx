@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="kahveModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'kahve.dbo.hakkimizda' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="hakkimizda">
+          <Property Name="id" Type="int" />
+          <Property Name="foto" Type="varchar(max)" />
+          <Property Name="baslik" Type="varchar(max)" />
+          <Property Name="ustbaslik" Type="varchar(max)" />
+          <Property Name="icerik" Type="varchar(max)" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'kahve.dbo.urunler' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="urunler">
+          <Key>
+            <PropertyRef Name="foto" />
+            <PropertyRef Name="baslik" />
+            <PropertyRef Name="ustbaslik" />
+            <PropertyRef Name="icerik" />
+            <PropertyRef Name="sira" />
+            <PropertyRef Name="aktif" />
+          </Key>
+          <Property Name="id" Type="int" />
+          <Property Name="foto" Type="varchar(max)" Nullable="false" />
+          <Property Name="baslik" Type="varchar(max)" Nullable="false" />
+          <Property Name="ustbaslik" Type="varchar(max)" Nullable="false" />
+          <Property Name="icerik" Type="varchar(max)" Nullable="false" />
+          <Property Name="sira" Type="int" Nullable="false" />
+          <Property Name="aktif" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="kahveModelStoreContainer">
+          <EntitySet Name="urunler" EntityType="Self.urunler" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [urunler].[id] AS [id], 
+    [urunler].[foto] AS [foto], 
+    [urunler].[baslik] AS [baslik], 
+    [urunler].[ustbaslik] AS [ustbaslik], 
+    [urunler].[icerik] AS [icerik], 
+    [urunler].[sira] AS [sira], 
+    [urunler].[aktif] AS [aktif]
+    FROM [dbo].[urunler] AS [urunler]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="kahveModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="urunler">
+          <Key>
+            <PropertyRef Name="foto" />
+            <PropertyRef Name="baslik" />
+            <PropertyRef Name="ustbaslik" />
+            <PropertyRef Name="icerik" />
+            <PropertyRef Name="sira" />
+            <PropertyRef Name="aktif" />
+          </Key>
+          <Property Name="id" Type="Int32" />
+          <Property Name="foto" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="baslik" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ustbaslik" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="icerik" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="sira" Type="Int32" Nullable="false" />
+          <Property Name="aktif" Type="Byte" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="kahveEntities3" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="urunlers" EntityType="Self.urunler" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="kahveModelStoreContainer" CdmEntityContainer="kahveEntities3">
+          <EntitySetMapping Name="urunlers">
+            <EntityTypeMapping TypeName="kahveModel.urunler">
+              <MappingFragment StoreEntitySet="urunler">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="foto" ColumnName="foto" />
+                <ScalarProperty Name="baslik" ColumnName="baslik" />
+                <ScalarProperty Name="ustbaslik" ColumnName="ustbaslik" />
+                <ScalarProperty Name="icerik" ColumnName="icerik" />
+                <ScalarProperty Name="sira" ColumnName="sira" />
+                <ScalarProperty Name="aktif" ColumnName="aktif" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

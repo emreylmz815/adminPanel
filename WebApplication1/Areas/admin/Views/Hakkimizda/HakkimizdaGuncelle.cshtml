@@ -1,0 +1,87 @@
+﻿@model WebApplication1.Models.HakkimizdaViewModel
+@{
+    ViewBag.Title = "Hakkimizda";
+    Layout = "~/Areas/admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="content-wrapper p-3">
+    <div class="Container">
+        <h2>
+            Hakkımızda Güncelle Sayfası
+        </h2>
+        @using (Html.BeginForm("kaydet", "Hakimizda", FormMethod.Post, new { @encttype = "multipart/form-data" }))
+        {
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Hızlı Güncelle</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form>
+                    <div class="card-body ">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Üst Başlık</label>
+                            @*<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">*@
+                            @Html.TextBoxFor(m => m.ustbaslik, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.ustbaslik)
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Başlık</label>
+                            @*<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">*@
+                            @Html.TextBoxFor(m => m.baslik, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.baslik)
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">İçerik</label>
+                            @*<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">*@
+                            @Html.TextAreaFor(m => m.icerik, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.icerik)
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputFile">Fotoğraf</label>
+                            <div>
+
+                                <img src="~/Content/img/@Model.foto" width="250" />
+                            </div>
+                            <div class="input-group">
+
+                                <div class="custom-file">
+                                    @*<input type="file" class="custom-file-input" id="exampleInputFile">*@
+                                    <label for="exampleInputEmail1">Fotoğraf Seç</label>
+                                    @*<input type="file" class="custom-file-input" id="exampleInputFile">*@
+
+                                </div>
+
+                            </div>
+                            <div>
+
+                                @Html.TextBoxFor(m => m.fotoFile, new { type = "file", @class = "input ", id = "exampleInputFile" })
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- /.card-body -->
+
+                    <div class="card-footer">
+                        @Html.HiddenFor(m => m.foto)
+                        @Html.HiddenFor(m => m.id)
+                        <button type="submit" class="btn btn-primary">Güncelle</button>
+                    </div>
+                </form>
+            </div>
+        }
+    </div>
+
+</div>
+
+@section altTaraf{
+    <script src="~/Content/admin/plugins/summernote/summernote-bs4.min.js"></script>
+    <link rel="stylesheet" href="~/Content/admin/plugins/summernote/summernote-bs4.css" />
+
+    <script>
+        $(function () {
+            $('#icerik').summernote()
+        })
+    </script>
+}
