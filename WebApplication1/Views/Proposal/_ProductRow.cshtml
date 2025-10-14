@@ -1,0 +1,25 @@
+@model WebApplication1.Models.ProposalProductInput
+<tr>
+    <td>
+        @Html.TextBoxFor(model => model.Name, new { @class = "form-control", placeholder = "Ürün adı" })
+        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+    </td>
+    <td>
+        @Html.TextBoxFor(model => model.Description, new { @class = "form-control", placeholder = "Açıklama" })
+    </td>
+    <td style="width: 120px;">
+        @Html.TextBoxFor(model => model.Quantity, new { @class = "form-control product-quantity", type = "number", min = 1 })
+    </td>
+    <td style="width: 150px;">
+        @Html.TextBoxFor(model => model.UnitPrice, new { @class = "form-control product-unit", type = "number", step = "0.01", min = 0 })
+    </td>
+    <td style="width: 120px;">
+        @Html.TextBoxFor(model => model.VatRate, new { @class = "form-control product-vat", type = "number", step = "0.01", min = 0 })
+    </td>
+    <td class="product-net align-middle">0</td>
+    <td class="product-vat-amount align-middle">0</td>
+    <td class="product-gross align-middle">0</td>
+    <td class="text-center align-middle">
+        <button type="button" class="btn btn-sm btn-outline-danger remove-product">Sil</button>
+    </td>
+</tr>
