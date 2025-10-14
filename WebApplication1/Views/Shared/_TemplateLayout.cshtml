@@ -44,6 +44,9 @@
                     <li class="nav-item px-lg-4 @(ViewContext.RouteData.Values["Action"].ToString() == "Contact" ? "active" : "")">
                         <a class="nav-link text-uppercase text-expanded" href="@Url.Action("Contact","Nuget")">Contact</a>
                     </li>
+                    <li class="nav-item px-lg-4 @(ViewContext.RouteData.Values["Controller"].ToString() == "Mail" ? "active" : "")">
+                        <a class="nav-link text-uppercase text-expanded" href="@Url.Action("Inbox","Mail")">Mail</a>
+                    </li>
                 </ul>
             </div>
         </div>

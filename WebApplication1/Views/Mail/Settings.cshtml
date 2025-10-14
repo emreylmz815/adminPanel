@@ -1,0 +1,117 @@
+@model WebApplication1.Models.MailSettingsViewModel
+@{
+    ViewBag.Title = "Mail Ayarları";
+}
+
+<section class="page-section cta">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-9 mx-auto">
+                <div class="cta-inner bg-faded text-center rounded">
+                    <h2 class="section-heading mb-4">
+                        <span class="section-heading-upper">Mail Servisi</span>
+                        <span class="section-heading-lower">Bağlantı Ayarları</span>
+                    </h2>
+
+                    @if (ViewBag.SettingsSaved != null)
+                    {
+                        <div class="alert alert-success" role="alert">
+                            Ayarlar kaydedildi.
+                        </div>
+                    }
+
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="form-row">
+                            <div class="form-group col-md-6 text-left">
+                                @Html.LabelFor(m => m.DisplayName)
+                                @Html.TextBoxFor(m => m.DisplayName, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.DisplayName, null, new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-md-6 text-left">
+                                @Html.LabelFor(m => m.EmailAddress)
+                                @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.EmailAddress, null, new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <h4 class="text-left mt-4">SMTP Ayarları</h4>
+                        <div class="form-row">
+                            <div class="form-group col-md-6 text-left">
+                                @Html.LabelFor(m => m.SmtpHost)
+                                @Html.TextBoxFor(m => m.SmtpHost, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.SmtpHost, null, new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-md-3 text-left">
+                                @Html.LabelFor(m => m.SmtpPort)
+                                @Html.TextBoxFor(m => m.SmtpPort, new { @class = "form-control", type = "number", min = 1, max = 65535 })
+                                @Html.ValidationMessageFor(m => m.SmtpPort, null, new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-md-3 text-left">
+                                @Html.LabelFor(m => m.SmtpUseSsl)
+                                <div class="form-control-plaintext">
+                                    @Html.CheckBoxFor(m => m.SmtpUseSsl) SSL
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6 text-left">
+                                @Html.LabelFor(m => m.SmtpUsername)
+                                @Html.TextBoxFor(m => m.SmtpUsername, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.SmtpUsername, null, new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-md-6 text-left">
+                                @Html.LabelFor(m => m.SmtpPassword)
+                                @Html.PasswordFor(m => m.SmtpPassword, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.SmtpPassword, null, new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <h4 class="text-left mt-4">IMAP Ayarları</h4>
+                        <div class="form-row">
+                            <div class="form-group col-md-6 text-left">
+                                @Html.LabelFor(m => m.ImapHost)
+                                @Html.TextBoxFor(m => m.ImapHost, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.ImapHost, null, new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-md-3 text-left">
+                                @Html.LabelFor(m => m.ImapPort)
+                                @Html.TextBoxFor(m => m.ImapPort, new { @class = "form-control", type = "number", min = 1, max = 65535 })
+                                @Html.ValidationMessageFor(m => m.ImapPort, null, new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-md-3 text-left">
+                                @Html.LabelFor(m => m.ImapUseSsl)
+                                <div class="form-control-plaintext">
+                                    @Html.CheckBoxFor(m => m.ImapUseSsl) SSL
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6 text-left">
+                                @Html.LabelFor(m => m.ImapUsername)
+                                @Html.TextBoxFor(m => m.ImapUsername, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.ImapUsername, null, new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-md-6 text-left">
+                                @Html.LabelFor(m => m.ImapPassword)
+                                @Html.PasswordFor(m => m.ImapPassword, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.ImapPassword, null, new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group text-left">
+                            @Html.LabelFor(m => m.InboxFolder)
+                            @Html.TextBoxFor(m => m.InboxFolder, new { @class = "form-control" })
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block">Kaydet</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

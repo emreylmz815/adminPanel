@@ -90,6 +90,9 @@
     <Reference Include="Microsoft.IdentityModel.Tokens, Version=6.35.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.IdentityModel.Tokens.6.35.0\lib\net472\Microsoft.IdentityModel.Tokens.dll</HintPath>
     </Reference>
+    <Reference Include="MailKit, Version=4.1.0.0, Culture=neutral, PublicKeyToken=4e064fe7a4f8260c, processorArchitecture=MSIL">
+      <HintPath>..\packages\MailKit.4.1.0\lib\net472\MailKit.dll</HintPath>
+    </Reference>
     <Reference Include="Npgsql, Version=4.0.10.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
       <HintPath>..\packages\Npgsql.4.0.10\lib\net451\Npgsql.dll</HintPath>
     </Reference>
@@ -186,6 +189,9 @@
   <ItemGroup>
     <Reference Include="System.Web.Razor">
       <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.9\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="MimeKit, Version=4.1.0.0, Culture=neutral, PublicKeyToken=bede1c8a46c66814, processorArchitecture=MSIL">
+      <HintPath>..\packages\MimeKit.4.1.0\lib\net472\MimeKit.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Webpages">
       <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.9\lib\net45\System.Web.Webpages.dll</HintPath>
@@ -4122,6 +4128,7 @@
     <Compile Include="Areas\admin\Controllers\LoginController.cs" />
     <Compile Include="Areas\admin\Controllers\UrunlerController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\MailController.cs" />
     <Compile Include="Controllers\NugetController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -4143,10 +4150,16 @@
       <DependentUpon>Kahve2020Model.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\KullaniciViewModel.cs" />
+    <Compile Include="Models\MailInboxItemViewModel.cs" />
+    <Compile Include="Models\MailMessageViewModel.cs" />
+    <Compile Include="Models\MailSettings.cs" />
+    <Compile Include="Models\MailSettingsViewModel.cs" />
     <Compile Include="Models\urunler.cs">
       <DependentUpon>Kahve2020Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\UrunlerViewModel.cs" />
+    <Compile Include="Services\MailService.cs" />
+    <Compile Include="Services\WebConfigMailSettingsProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -4434,6 +4447,9 @@
     <None Include="packages.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_TemplateLayout.cshtml" />
+    <Content Include="Views\Mail\Inbox.cshtml" />
+    <Content Include="Views\Mail\Send.cshtml" />
+    <Content Include="Views\Mail\Settings.cshtml" />
     <Content Include="Views\Nuget\Store.cshtml" />
     <Content Include="Views\Nuget\Products.cshtml" />
     <Content Include="Views\Nuget\Index.cshtml" />

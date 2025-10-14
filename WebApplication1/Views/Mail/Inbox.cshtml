@@ -1,0 +1,62 @@
+@model IEnumerable<WebApplication1.Models.MailInboxItemViewModel>
+@using System.Linq
+@{
+    ViewBag.Title = "Gelen Kutusu";
+}
+
+<section class="page-section cta">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-10 mx-auto">
+                <div class="cta-inner bg-faded text-center rounded">
+                    <h2 class="section-heading mb-4">
+                        <span class="section-heading-upper">Mail Servisi</span>
+                        <span class="section-heading-lower">Gelen Kutusu</span>
+                    </h2>
+
+                    @if (ViewBag.InboxError != null)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            @ViewBag.InboxError
+                        </div>
+                    }
+                    else if (!Model.Any())
+                    {
+                        <p>Görüntülenecek mail bulunamadı.</p>
+                    }
+                    else
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Gönderen</th>
+                                        <th scope="col">Konu</th>
+                                        <th scope="col">Tarih</th>
+                                        <th scope="col">Önizleme</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                @foreach (var message in Model)
+                                {
+                                    <tr>
+                                        <td class="text-left">@message.From</td>
+                                        <td class="text-left">@message.Subject</td>
+                                        <td class="text-left">@message.Date.ToString("dd.MM.yyyy HH:mm")</td>
+                                        <td class="text-left">@message.Preview</td>
+                                    </tr>
+                                }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+
+                    <div class="mt-4">
+                        <a href="@Url.Action("Send", "Mail")" class="btn btn-primary">Yeni Mail Gönder</a>
+                        <a href="@Url.Action("Settings", "Mail")" class="btn btn-secondary">Ayarları Güncelle</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
