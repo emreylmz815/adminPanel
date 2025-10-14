@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using WebApplication1.Models;
 using WebApplication1.Services;
 
-namespace WebApplication1.Controllers
+namespace WebApplication1.Areas.admin.Controllers
 {
     public class ProposalController : Controller
     {
