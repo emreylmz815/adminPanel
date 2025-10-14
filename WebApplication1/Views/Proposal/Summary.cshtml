@@ -1,0 +1,123 @@
+@model WebApplication1.Models.ProposalSummaryViewModel
+
+@{
+    ViewBag.Title = "Teklif Özeti";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Teklif Özeti</h2>
+    <a class="btn btn-outline-primary" href="@Url.Action("DownloadPdf", "Proposal")">PDF İndir</a>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">Firma ve Müşteri Bilgileri</div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <h5>Firma</h5>
+                <p class="mb-1"><strong>@Model.CompanyName</strong></p>
+                <p class="mb-1">@Model.CompanyAddress</p>
+                <p class="mb-1">Teklif No: @Model.ProposalNumber</p>
+                <p class="mb-1">Tarih: @Model.ProposalDate.ToString("dd.MM.yyyy")</p>
+                @if (!string.IsNullOrWhiteSpace(Model.CompanyLogoUrl))
+                {
+                    <img src="@Model.CompanyLogoUrl" alt="Logo" class="img-fluid mt-2" style="max-height:120px;" />
+                }
+            </div>
+            <div class="col-md-6">
+                <h5>Müşteri</h5>
+                <p class="mb-1"><strong>@Model.ClientName</strong></p>
+                <p>@Model.ClientAddress</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">Ürünler (@Model.ProductCount)</div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Ürün</th>
+                        <th>Açıklama</th>
+                        <th class="text-center">Adet</th>
+                        <th class="text-right">Birim Fiyat</th>
+                        <th class="text-right">KDV</th>
+                        <th class="text-right">Toplam</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var product in Model.Products)
+                    {
+                        <tr>
+                            <td>@product.Name</td>
+                            <td>@product.Description</td>
+                            <td class="text-center">@product.Quantity</td>
+                            <td class="text-right">@product.UnitPrice.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("tr-TR"))</td>
+                            <td class="text-right">
+                                @($"%{product.VatRate:0.##}")
+                                <div class="text-muted small">@product.VatAmount.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("tr-TR"))</div>
+                            </td>
+                            <td class="text-right">@product.GrossTotal.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("tr-TR"))</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-4 offset-md-8">
+                <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Ara Toplam</span>
+                        <strong>@Model.TotalNet.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("tr-TR"))</strong>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>KDV Toplam</span>
+                        <strong>@Model.TotalVat.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("tr-TR"))</strong>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Genel Toplam</span>
+                        <strong>@Model.TotalGross.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("tr-TR"))</strong>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">İmza ve Kaşe</div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <h5>Kaşe</h5>
+                <p>@Model.CompanyStampText</p>
+            </div>
+            <div class="col-md-6">
+                <h5>İmza</h5>
+                @if (!string.IsNullOrWhiteSpace(Model.AuthorizedSignatureImageUrl))
+                {
+                    <img src="@Model.AuthorizedSignatureImageUrl" alt="İmza" class="img-fluid mb-2" style="max-height:120px;" />
+                }
+                <p class="mb-0"><strong>@Model.AuthorizedSignatureName</strong></p>
+                <p>@Model.AuthorizedSignatureTitle</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (!string.IsNullOrWhiteSpace(Model.Notes))
+{
+    <div class="card mb-4">
+        <div class="card-header">Notlar</div>
+        <div class="card-body">
+            <p>@Model.Notes</p>
+        </div>
+    </div>
+}
+
+<div class="text-right">
+    <a class="btn btn-secondary" href="@Url.Action("Create", "Proposal")">Yeni Teklif Hazırla</a>
+</div>

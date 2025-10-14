@@ -59,6 +59,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.3, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13.3\lib\net40\itextsharp.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=9.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.9.0.1\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -4130,6 +4133,7 @@
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\MailController.cs" />
     <Compile Include="Controllers\NugetController.cs" />
+    <Compile Include="Controllers\ProposalController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -4149,6 +4153,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Kahve2020Model.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\KanbanModels.cs" />
+    <Compile Include="Models\MenuModels.cs" />
     <Compile Include="Models\KullaniciViewModel.cs" />
     <Compile Include="Models\MailInboxItemViewModel.cs" />
     <Compile Include="Models\MailMessageViewModel.cs" />
@@ -4161,6 +4167,9 @@
     <Compile Include="Services\MailService.cs" />
     <Compile Include="Services\WebConfigMailSettingsProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\KanbanBoardService.cs" />
+    <Compile Include="Services\CafeMenuService.cs" />
+    <Compile Include="Services\PdfProposalService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -4168,6 +4177,11 @@
     <Content Include="Areas\admin\Views\_ViewStart.cshtml" />
     <Content Include="Areas\admin\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\admin\Views\Login\Index.cshtml" />
+    <Content Include="Views\Kanban\Index.cshtml" />
+    <Content Include="Views\Menu\Index.cshtml" />
+    <Content Include="Views\Proposal\_ProductRow.cshtml" />
+    <Content Include="Views\Proposal\Create.cshtml" />
+    <Content Include="Views\Proposal\Summary.cshtml" />
     <Content Include="Content\admin\dist\css\adminlte.css.map" />
     <Content Include="Content\admin\dist\css\adminlte.min.css.map" />
     <Content Include="Content\admin\dist\css\alt\adminlte.components.css.map" />
