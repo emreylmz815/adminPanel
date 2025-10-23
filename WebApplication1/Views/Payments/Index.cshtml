@@ -1,0 +1,75 @@
+@using System.Linq
+@model WebApplication1.Models.CRM.ViewModels.PaymentListViewModel
+@{
+    ViewBag.Title = "Payment Plans";
+}
+<h2>@ViewBag.Title</h2>
+
+@if (Model.Summary != null)
+{
+    <div class="alert alert-info">
+        Planned: @Model.Summary.Planned.ToString("C") |
+        Paid: @Model.Summary.Paid.ToString("C") |
+        Overdue: @Model.Summary.Overdue.ToString("C")
+    </div>
+}
+
+@using (Html.BeginForm("Plans", "Payments", FormMethod.Get))
+{
+    <div class="form-inline">
+        <select name="status" class="form-control">
+            <option value="">All</option>
+            @foreach (WebApplication1.Models.CRM.PaymentPlanStatus status in Enum.GetValues(typeof(WebApplication1.Models.CRM.PaymentPlanStatus)))
+            {
+                <option value="@status" @(Model.Status == status ? "selected" : null)>@status</option>
+            }
+        </select>
+        <input type="date" name="from" value="@(Model.From?.ToString("yyyy-MM-dd"))" class="form-control" />
+        <input type="date" name="to" value="@(Model.To?.ToString("yyyy-MM-dd"))" class="form-control" />
+        <button type="submit" class="btn btn-primary">Filter</button>
+    </div>
+}
+
+<p>
+    @Html.ActionLink("Create Plan", "CreatePlan", null, new { @class = "btn btn-success" })
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Quote</th>
+            <th>Due Date</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var plan in Model.Plans.Items)
+    {
+        <tr>
+            <td>@Model.Quotes.FirstOrDefault(q => q.Id == plan.QuoteId)?.Title</td>
+            <td>@plan.DueDate.ToShortDateString()</td>
+            <td>@plan.Amount.ToString("C")</td>
+            <td>@plan.Status</td>
+            <td>
+                @Html.ActionLink("Edit", "EditPlan", new { id = plan.Id }, new { @class = "btn btn-xs btn-primary" })
+                @using (Html.BeginForm("DeletePlan", "Payments", new { id = plan.Id }, FormMethod.Post, new { @class = "inline-form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-xs btn-danger">Delete</button>
+                }
+                @using (Html.BeginForm("Pay", "Payments", FormMethod.Post, new { @class = "inline-form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.Hidden("PlanId", plan.Id)
+                    @Html.Hidden("Amount", plan.Amount)
+                    @Html.Hidden("Method", WebApplication1.Models.CRM.PaymentMethod.Cash)
+                    @Html.Hidden("PaidAt", DateTime.UtcNow)
+                    <button type="submit" class="btn btn-xs btn-success">Mark Paid</button>
+                }
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

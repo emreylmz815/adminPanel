@@ -1,0 +1,93 @@
+@model WebApplication1.Models.CRM.ViewModels.CompanyListViewModel
+@{
+    ViewBag.Title = "Companies";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("Index", "Companies", FormMethod.Get))
+{
+    <div class="form-inline">
+        <input type="text" name="search" value="@Model.Search" placeholder="Search" class="form-control" />
+        <input type="text" name="tag" value="@Model.Tag" placeholder="Tag" class="form-control" />
+        <select name="active" class="form-control">
+            <option value="">All</option>
+            <option value="true" @(Model.Active == true ? "selected" : null)>Active</option>
+            <option value="false" @(Model.Active == false ? "selected" : null)>Inactive</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Filter</button>
+    </div>
+}
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">@TempData["Message"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<p>
+    @Html.ActionLink("Create Company", "Create", null, new { @class = "btn btn-success" })
+</p>
+
+@using (Html.BeginForm("BulkTags", "Companies", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th><input type="checkbox" id="select-all" /></th>
+                <th>Name</th>
+                <th>Tags</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var company in Model.Companies.Items)
+        {
+            <tr>
+                <td><input type="checkbox" name="CompanyIds" value="@company.Id" /></td>
+                <td>@Html.ActionLink(company.Name, "Details", new { id = company.Id })</td>
+                <td>@string.Join(", ", company.TagList)</td>
+                <td>@(company.IsActive ? "Active" : "Inactive")</td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = company.Id }, new { @class = "btn btn-sm btn-primary" })
+                    @using (Html.BeginForm("Deactivate", "Companies", new { id = company.Id }, FormMethod.Post, new { @class = "inline-form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-sm btn-warning">Deactivate</button>
+                    }
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <div class="form-group">
+        <label>Tags to add</label>
+        <input type="text" name="TagsToAdd" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Tags to remove</label>
+        <input type="text" name="TagsToRemove" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-secondary">Update Tags</button>
+}
+
+@section scripts {
+    <script>
+        (function(){
+            var selectAll = document.getElementById('select-all');
+            if(selectAll){
+                selectAll.addEventListener('change', function(){
+                    var boxes = document.querySelectorAll('input[name="CompanyIds"]');
+                    for (var i = 0; i < boxes.length; i++) {
+                        boxes[i].checked = selectAll.checked;
+                    }
+                });
+            }
+        })();
+    </script>
+}

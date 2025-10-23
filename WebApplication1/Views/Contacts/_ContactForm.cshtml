@@ -1,0 +1,29 @@
+@model WebApplication1.Models.CRM.ViewModels.ContactFormViewModel
+@Html.AntiForgeryToken()
+@Html.HiddenFor(m => m.CompanyId)
+@Html.HiddenFor(m => m.Id)
+<div class="form-group">
+    @Html.LabelFor(m => m.FullName)
+    @Html.TextBoxFor(m => m.FullName, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.FullName)
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Title)
+    @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Email)
+    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Phone)
+    @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Notes)
+    @Html.TextAreaFor(m => m.Notes, new { @class = "form-control" })
+</div>
+<div class="checkbox">
+    <label>@Html.CheckBoxFor(m => m.IsPrimary) Primary</label>
+</div>
+<button type="submit" class="btn btn-primary">Save</button>
