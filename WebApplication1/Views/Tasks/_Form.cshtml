@@ -1,0 +1,34 @@
+@model WebApplication1.Models.CRM.ViewModels.TaskFormViewModel
+@Html.ValidationSummary(true)
+<div class="form-group">
+    @Html.LabelFor(m => m.Task.Title)
+    @Html.TextBoxFor(m => m.Task.Title, new { @class = "form-control" })
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Task.Description)
+    @Html.TextAreaFor(m => m.Task.Description, new { @class = "form-control" })
+</div>
+<div class="form-group">
+    @Html.Label("Company")
+    @Html.DropDownListFor(m => m.Task.CompanyId, new SelectList(Model.Companies, "Id", "Name", Model.Task.CompanyId), "None", new { @class = "form-control" })
+</div>
+<div class="form-group">
+    @Html.Label("Quote")
+    @Html.DropDownListFor(m => m.Task.QuoteId, new SelectList(Model.Quotes, "Id", "Title", Model.Task.QuoteId), "None", new { @class = "form-control" })
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Task.AssigneeUserId)
+    @Html.TextBoxFor(m => m.Task.AssigneeUserId, new { @class = "form-control" })
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Task.Status)
+    @Html.EnumDropDownListFor(m => m.Task.Status, "Select status", new { @class = "form-control" })
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Task.Priority)
+    @Html.EnumDropDownListFor(m => m.Task.Priority, "Select priority", new { @class = "form-control" })
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Task.DueDate)
+    @Html.TextBoxFor(m => m.Task.DueDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+</div>

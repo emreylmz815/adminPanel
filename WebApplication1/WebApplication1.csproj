@@ -4131,6 +4131,12 @@
     <Compile Include="Areas\admin\Controllers\KanbanController.cs" />
     <Compile Include="Areas\admin\Controllers\MenuController.cs" />
     <Compile Include="Controllers\NugetController.cs" />
+    <Compile Include="Controllers\CompaniesController.cs" />
+    <Compile Include="Controllers\ContactsController.cs" />
+    <Compile Include="Controllers\CrmNotesController.cs" />
+    <Compile Include="Controllers\PaymentsController.cs" />
+    <Compile Include="Controllers\QuotesController.cs" />
+    <Compile Include="Controllers\TasksController.cs" />
     <Compile Include="Areas\admin\Controllers\ProposalController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -4153,6 +4159,10 @@
     </Compile>
     <Compile Include="Models\KanbanModels.cs" />
     <Compile Include="Models\MenuModels.cs" />
+    <Compile Include="Models\CRM\ViewModels\CompanyViewModels.cs" />
+    <Compile Include="Models\CRM\ViewModels\PaymentViewModels.cs" />
+    <Compile Include="Models\CRM\ViewModels\QuoteViewModels.cs" />
+    <Compile Include="Models\CRM\ViewModels\TaskViewModels.cs" />
     <Compile Include="Models\KullaniciViewModel.cs" />
     <Compile Include="Models\ProposalModels.cs" />
     <Compile Include="Models\urunler.cs">
@@ -4163,6 +4173,14 @@
     <Compile Include="Services\KanbanBoardService.cs" />
     <Compile Include="Services\CafeMenuService.cs" />
     <Compile Include="Services\PdfProposalService.cs" />
+    <Compile Include="Services\CRM\InMemory\InMemoryCompanyService.cs" />
+    <Compile Include="Services\CRM\InMemory\InMemoryContactService.cs" />
+    <Compile Include="Services\CRM\InMemory\InMemoryCrmDataStore.cs" />
+    <Compile Include="Services\CRM\InMemory\InMemoryCrmNoteService.cs" />
+    <Compile Include="Services\CRM\InMemory\InMemoryPaymentService.cs" />
+    <Compile Include="Services\CRM\InMemory\InMemoryQuoteNumberGenerator.cs" />
+    <Compile Include="Services\CRM\InMemory\InMemoryQuoteService.cs" />
+    <Compile Include="Services\CRM\InMemory\InMemoryTaskService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -4175,6 +4193,30 @@
     <Content Include="Areas\admin\Views\Proposal\_ProductRow.cshtml" />
     <Content Include="Areas\admin\Views\Proposal\Create.cshtml" />
     <Content Include="Areas\admin\Views\Proposal\Summary.cshtml" />
+    <Content Include="Views\Companies\Create.cshtml" />
+    <Content Include="Views\Companies\Details.cshtml" />
+    <Content Include="Views\Companies\Edit.cshtml" />
+    <Content Include="Views\Companies\Index.cshtml" />
+    <Content Include="Views\Companies\_Form.cshtml" />
+    <Content Include="Views\Contacts\_ContactForm.cshtml" />
+    <Content Include="Views\Contacts\_ContactTable.cshtml" />
+    <Content Include="Views\Payments\CreatePlan.cshtml" />
+    <Content Include="Views\Payments\EditPlan.cshtml" />
+    <Content Include="Views\Payments\Index.cshtml" />
+    <Content Include="Views\Payments\_PlanForm.cshtml" />
+    <Content Include="Views\Payments\_ReceiptTable.cshtml" />
+    <Content Include="Views\Quotes\Create.cshtml" />
+    <Content Include="Views\Quotes\Details.cshtml" />
+    <Content Include="Views\Quotes\Edit.cshtml" />
+    <Content Include="Views\Quotes\Index.cshtml" />
+    <Content Include="Views\Quotes\_Form.cshtml" />
+    <Content Include="Views\Tasks\Calendar.cshtml" />
+    <Content Include="Views\Tasks\Create.cshtml" />
+    <Content Include="Views\Tasks\Details.cshtml" />
+    <Content Include="Views\Tasks\Edit.cshtml" />
+    <Content Include="Views\Tasks\Kanban.cshtml" />
+    <Content Include="Views\Tasks\List.cshtml" />
+    <Content Include="Views\Tasks\_Form.cshtml" />
     <Content Include="Content\admin\dist\css\adminlte.css.map" />
     <Content Include="Content\admin\dist\css\adminlte.min.css.map" />
     <Content Include="Content\admin\dist\css\alt\adminlte.components.css.map" />
@@ -4544,4 +4586,23 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <Compile Include="Models\CRM\Company.cs" />
+    <Compile Include="Models\CRM\Contact.cs" />
+    <Compile Include="Models\CRM\CrmNote.cs" />
+    <Compile Include="Models\CRM\Quote.cs" />
+    <Compile Include="Models\CRM\QuoteLine.cs" />
+    <Compile Include="Models\CRM\TaskItem.cs" />
+    <Compile Include="Models\CRM\TaskComment.cs" />
+    <Compile Include="Models\CRM\KanbanColumn.cs" />
+    <Compile Include="Models\CRM\PaymentPlan.cs" />
+    <Compile Include="Models\CRM\PaymentReceipt.cs" />
+    <Compile Include="Services\CRM\PagedResult.cs" />
+    <Compile Include="Services\CRM\ICompanyService.cs" />
+    <Compile Include="Services\CRM\IContactService.cs" />
+    <Compile Include="Services\CRM\ICrmNoteService.cs" />
+    <Compile Include="Services\CRM\IQuoteService.cs" />
+    <Compile Include="Services\CRM\ITaskService.cs" />
+    <Compile Include="Services\CRM\IPaymentService.cs" />
+  </ItemGroup>
 </Project>

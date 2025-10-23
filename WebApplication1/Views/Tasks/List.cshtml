@@ -1,0 +1,58 @@
+@model WebApplication1.Models.CRM.ViewModels.TaskListViewModel
+@{
+    ViewBag.Title = "Tasks";
+}
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("List", "Tasks", FormMethod.Get))
+{
+    <div class="form-inline">
+        <input type="text" name="assignee" value="@Model.Assignee" placeholder="Assignee" class="form-control" />
+        <input type="date" name="dueFrom" value="@(Model.DueFrom?.ToString("yyyy-MM-dd"))" class="form-control" />
+        <input type="date" name="dueTo" value="@(Model.DueTo?.ToString("yyyy-MM-dd"))" class="form-control" />
+        <select name="status" class="form-control">
+            <option value="">All</option>
+            @foreach (WebApplication1.Models.CRM.TaskStatus status in Enum.GetValues(typeof(WebApplication1.Models.CRM.TaskStatus)))
+            {
+                <option value="@status" @(Model.Status == status ? "selected" : null)>@status</option>
+            }
+        </select>
+        <button type="submit" class="btn btn-primary">Filter</button>
+    </div>
+}
+
+<p>
+    @Html.ActionLink("Create Task", "Create", null, new { @class = "btn btn-success" })
+    @Html.ActionLink("Kanban", "Kanban", null, new { @class = "btn btn-default" })
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Priority</th>
+            <th>Due Date</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var task in Model.Tasks.Items)
+    {
+        <tr>
+            <td>@Html.ActionLink(task.Title, "Details", new { id = task.Id })</td>
+            <td>@task.Status</td>
+            <td>@task.Priority</td>
+            <td>@task.DueDate?.ToShortDateString()</td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = task.Id }, new { @class = "btn btn-xs btn-primary" })
+                @using (Html.BeginForm("Delete", "Tasks", new { id = task.Id }, FormMethod.Post, new { @class = "inline-form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-xs btn-danger">Delete</button>
+                }
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

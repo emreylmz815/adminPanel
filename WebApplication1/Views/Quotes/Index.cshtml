@@ -1,0 +1,61 @@
+@using System.Linq
+@model WebApplication1.Models.CRM.ViewModels.QuoteListViewModel
+@{
+    ViewBag.Title = "Quotes";
+}
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("Index", "Quotes", FormMethod.Get))
+{
+    <div class="form-inline">
+        <select name="status" class="form-control">
+            <option value="">All statuses</option>
+            @foreach (WebApplication1.Models.CRM.QuoteStatus status in Enum.GetValues(typeof(WebApplication1.Models.CRM.QuoteStatus)))
+            {
+                <option value="@status" @(Model.Status == status ? "selected" : null)>@status</option>
+            }
+        </select>
+        <select name="companyId" class="form-control">
+            <option value="">All companies</option>
+            @foreach (var company in Model.Companies)
+            {
+                <option value="@company.Id" @(Model.CompanyId == company.Id ? "selected" : null)>@company.Name</option>
+            }
+        </select>
+        <input type="text" name="search" class="form-control" value="@Model.Search" placeholder="Search" />
+        <button type="submit" class="btn btn-primary">Filter</button>
+    </div>
+}
+
+<p>
+    @Html.ActionLink("Create Quote", "Create", null, new { @class = "btn btn-success" })
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>Title</th>
+            <th>Company</th>
+            <th>Status</th>
+            <th>Total</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var quote in Model.Quotes.Items)
+    {
+        <tr>
+            <td>@quote.No</td>
+            <td>@Html.ActionLink(quote.Title, "Details", new { id = quote.Id })</td>
+            <td>@Model.Companies.FirstOrDefault(c => c.Id == quote.CompanyId)?.Name</td>
+            <td><span class="label label-default">@quote.Status</span></td>
+            <td>@quote.Total.ToString("C")</td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = quote.Id }, new { @class = "btn btn-xs btn-primary" })
+                @Html.ActionLink("PDF", "Pdf", new { id = quote.Id }, new { @class = "btn btn-xs btn-info" })
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

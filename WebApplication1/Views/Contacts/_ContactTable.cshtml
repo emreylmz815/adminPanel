@@ -1,0 +1,33 @@
+@model System.Collections.Generic.IEnumerable<WebApplication1.Models.CRM.Contact>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Title</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Primary</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var contact in Model)
+    {
+        <tr>
+            <td>@contact.FullName</td>
+            <td>@contact.Title</td>
+            <td>@contact.Email</td>
+            <td>@contact.Phone</td>
+            <td>@(contact.IsPrimary ? "Yes" : "No")</td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", "Contacts", new { id = contact.Id }, new { @class = "btn btn-xs btn-primary" })
+                @using (Html.BeginForm("DeleteContact", "Companies", new { id = contact.Id, companyId = contact.CompanyId }, FormMethod.Post, new { @class = "inline-form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-xs btn-danger">Delete</button>
+                }
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

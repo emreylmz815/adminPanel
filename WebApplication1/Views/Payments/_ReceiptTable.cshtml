@@ -1,0 +1,22 @@
+@model System.Collections.Generic.IEnumerable<WebApplication1.Models.CRM.PaymentReceipt>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Paid At</th>
+            <th>Amount</th>
+            <th>Method</th>
+            <th>Reference</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var receipt in Model)
+    {
+        <tr>
+            <td>@receipt.PaidAt.ToShortDateString()</td>
+            <td>@receipt.Amount.ToString("C")</td>
+            <td>@receipt.Method</td>
+            <td>@receipt.ReferenceNo</td>
+        </tr>
+    }
+    </tbody>
+</table>

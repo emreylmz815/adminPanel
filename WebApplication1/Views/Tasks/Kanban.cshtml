@@ -1,0 +1,53 @@
+@using System.Linq
+@model WebApplication1.Models.CRM.ViewModels.TaskKanbanViewModel
+@{
+    ViewBag.Title = "Kanban";
+}
+<h2>@ViewBag.Title</h2>
+@Html.AntiForgeryToken()
+<div class="row" id="kanban-board">
+@foreach (var column in Model.Columns)
+{
+    <div class="col-md-3 kanban-column" data-status="@column.Name">
+        <h4>@column.Name</h4>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                @foreach (var task in Model.Tasks.Where(t => t.Status.ToString() == column.Name))
+                {
+                    <div class="kanban-card" data-id="@task.Id">
+                        <strong>@task.Title</strong>
+                        <div><small>@task.DueDate?.ToShortDateString()</small></div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+</div>
+
+@section scripts {
+    <script>
+        (function(){
+            var token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+            document.querySelectorAll('.kanban-card').forEach(function (card) {
+                card.draggable = true;
+                card.addEventListener('dragstart', function (ev) {
+                    ev.dataTransfer.setData('text/plain', card.getAttribute('data-id'));
+                });
+            });
+            document.querySelectorAll('.kanban-column .panel-body').forEach(function (column) {
+                column.addEventListener('dragover', function (ev) { ev.preventDefault(); });
+                column.addEventListener('drop', function (ev) {
+                    ev.preventDefault();
+                    var id = ev.dataTransfer.getData('text/plain');
+                    var status = column.closest('.kanban-column').getAttribute('data-status');
+                    fetch('@Url.Action("Move")', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: '__RequestVerificationToken=' + token + '&id=' + id + '&toStatus=' + status
+                    }).then(function(){ location.reload(); });
+                });
+            });
+        })();
+    </script>
+}

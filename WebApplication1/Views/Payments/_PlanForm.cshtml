@@ -1,0 +1,26 @@
+@model WebApplication1.Models.CRM.ViewModels.PaymentPlanFormViewModel
+@Html.ValidationSummary(true)
+<div class="form-group">
+    @Html.Label("Quote")
+    @Html.DropDownListFor(m => m.Plan.QuoteId, new SelectList(Model.Quotes, "Id", "Title", Model.Plan.QuoteId), "Select quote", new { @class = "form-control" })
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Plan.DueDate)
+    @Html.TextBoxFor(m => m.Plan.DueDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Plan.Amount)
+    @Html.TextBoxFor(m => m.Plan.Amount, new { @class = "form-control" })
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Plan.Currency)
+    @Html.TextBoxFor(m => m.Plan.Currency, new { @class = "form-control" })
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Plan.Status)
+    @Html.EnumDropDownListFor(m => m.Plan.Status, "Select status", new { @class = "form-control" })
+</div>
+<div class="form-group">
+    @Html.LabelFor(m => m.Plan.Notes)
+    @Html.TextAreaFor(m => m.Plan.Notes, new { @class = "form-control" })
+</div>

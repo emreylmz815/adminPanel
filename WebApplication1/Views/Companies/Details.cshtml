@@ -1,0 +1,125 @@
+@model WebApplication1.Models.CRM.ViewModels.CompanyDetailsViewModel
+@{
+    ViewBag.Title = "Company Details";
+}
+<h2>@Model.Company.Name</h2>
+
+<ul class="nav nav-tabs" role="tablist">
+    <li class="active"><a href="#general" role="tab" data-toggle="tab">General</a></li>
+    <li><a href="#contacts" role="tab" data-toggle="tab">Contacts</a></li>
+    <li><a href="#notes" role="tab" data-toggle="tab">Notes</a></li>
+</ul>
+<div class="tab-content" style="padding-top:15px;">
+    <div class="tab-pane active" id="general">
+        <dl class="dl-horizontal">
+            <dt>Sector</dt><dd>@Model.Company.Sector</dd>
+            <dt>Phone</dt><dd>@Model.Company.Phone</dd>
+            <dt>Email</dt><dd>@Model.Company.Email</dd>
+            <dt>Website</dt><dd>@Model.Company.Website</dd>
+            <dt>Tags</dt><dd>@string.Join(", ", Model.Company.TagList)</dd>
+            <dt>Status</dt><dd>@(Model.Company.IsActive ? "Active" : "Inactive")</dd>
+        </dl>
+    </div>
+    <div class="tab-pane" id="contacts">
+        <div id="contact-list">
+            @Html.Partial("~/Views/Contacts/_ContactTable.cshtml", Model.Contacts)
+        </div>
+        <hr />
+        <h4>Add / Edit Contact</h4>
+        @using (Html.BeginForm("SaveContact", "Companies", FormMethod.Post, new { @class = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.ContactForm.CompanyId)
+            @Html.HiddenFor(m => m.ContactForm.Id)
+            <div class="form-group">
+                @Html.LabelFor(m => m.ContactForm.FullName)
+                @Html.TextBoxFor(m => m.ContactForm.FullName, new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.ContactForm.Title)
+                @Html.TextBoxFor(m => m.ContactForm.Title, new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.ContactForm.Email)
+                @Html.TextBoxFor(m => m.ContactForm.Email, new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.ContactForm.Phone)
+                @Html.TextBoxFor(m => m.ContactForm.Phone, new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.ContactForm.Notes)
+                @Html.TextAreaFor(m => m.ContactForm.Notes, new { @class = "form-control" })
+            </div>
+            <div class="checkbox">
+                <label>@Html.CheckBoxFor(m => m.ContactForm.IsPrimary) Primary contact</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Contact</button>
+        }
+    </div>
+    <div class="tab-pane" id="notes">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                @using (Html.BeginForm("AddNote", "Companies", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(m => m.NoteForm.CompanyId)
+                    <div class="form-group">
+                        @Html.TextAreaFor(m => m.NoteForm.Content, new { @class = "form-control", rows = 3, placeholder = "Write a note" })
+                    </div>
+                    <div class="checkbox">
+                        <label>@Html.CheckBoxFor(m => m.NoteForm.Pinned) Pin note</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Note</button>
+                }
+            </div>
+        </div>
+        <div class="row">
+            @foreach (var note in Model.Notes)
+            {
+                <div class="col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            @if (note.Pinned)
+                            {
+                                <span class="label label-info">Pinned</span>
+                            }
+                            <span class="pull-right">@note.CreatedAt.ToShortDateString()</span>
+                        </div>
+                        <div class="panel-body">
+                            <p>@note.Content</p>
+                        </div>
+                        <div class="panel-footer">
+                            @using (Html.BeginForm("PinNote", "Companies", FormMethod.Post, new { @class = "inline-form" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.Hidden("id", note.Id)
+                                @Html.Hidden("companyId", Model.Company.Id)
+                                @Html.Hidden("pinned", !note.Pinned)
+                                <button type="submit" class="btn btn-xs btn-default">@(note.Pinned ? "Unpin" : "Pin")</button>
+                            }
+                            @using (Html.BeginForm("DeleteNote", "Companies", FormMethod.Post, new { @class = "inline-form" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.Hidden("id", note.Id)
+                                @Html.Hidden("companyId", Model.Company.Id)
+                                <button type="submit" class="btn btn-xs btn-danger">Delete</button>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(function(){
+            $('.nav-tabs a').click(function (e) {
+                e.preventDefault();
+                $(this).tab('show');
+            });
+        });
+    </script>
+}
