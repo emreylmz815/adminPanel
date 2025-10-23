@@ -2,169 +2,172 @@
 
 @{
     ViewBag.Title = "Kanban İş Takip";
+
+    Layout = "~/Areas/admin/Views/Shared/_LayoutAdmin.cshtml";
 }
+<div class="content-wrapper">
+    <h2 class="mb-4">@Model.Title</h2>
 
-<h2 class="mb-4">@Model.Title</h2>
-
-@if (TempData["KanbanWarning"] != null)
-{
-    <div class="alert alert-warning">@TempData["KanbanWarning"]</div>
-}
-
-<div class="row mb-4">
-    <div class="col-md-8">
-        @using (Html.BeginForm("UpdateTitle", "Kanban", FormMethod.Post, new { @class = "form-inline" }))
-        {
-            @Html.AntiForgeryToken()
-            <div class="form-group mr-2">
-                <label class="mr-2" for="board-title">Başlık</label>
-                <input type="text" id="board-title" name="title" class="form-control" value="@Model.Title" />
-            </div>
-            <button type="submit" class="btn btn-primary">Güncelle</button>
-        }
-    </div>
-    <div class="col-md-4 text-right">
-        @using (Html.BeginForm("Reset", "Kanban", FormMethod.Post))
-        {
-            @Html.AntiForgeryToken()
-            <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Panoyu sıfırlamak istediğinizden emin misiniz?');">Panoyu Sıfırla</button>
-        }
-    </div>
-</div>
-
-<div class="card mb-4">
-    <div class="card-header">Yeni Sütun Ekle</div>
-    <div class="card-body">
-        @using (Html.BeginForm("AddColumn", "Kanban", FormMethod.Post))
-        {
-            @Html.AntiForgeryToken()
-            <div class="form-row row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Sütun Adı</label>
-                        <input type="text" name="name" class="form-control" required />
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>WIP Limiti (opsiyonel)</label>
-                        <input type="number" name="workInProgressLimit" class="form-control" min="0" />
-                    </div>
-                </div>
-                <div class="col-md-2 align-self-end">
-                    <button type="submit" class="btn btn-success btn-block">Ekle</button>
-                </div>
-            </div>
-        }
-    </div>
-</div>
-
-<div class="kanban-board row">
-    @foreach (var column in Model.Columns)
+    @if (TempData["KanbanWarning"] != null)
     {
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <div>
-                        <strong>@column.Name</strong>
-                        @if (column.WorkInProgressLimit.HasValue)
-                        {
-                            <span class="badge badge-info ml-2">WIP: @column.Cards.Count / @column.WorkInProgressLimit</span>
-                        }
-                    </div>
-                    <span class="badge badge-secondary">@column.Cards.Count</span>
+        <div class="alert alert-warning">@TempData["KanbanWarning"]</div>
+    }
+
+    <div class="row mb-4">
+        <div class="col-md-8">
+            @using (Html.BeginForm("UpdateTitle", "Kanban", FormMethod.Post, new { @class = "form-inline" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="form-group mr-2">
+                    <label class="mr-2" for="board-title">Başlık</label>
+                    <input type="text" id="board-title" name="title" class="form-control" value="@Model.Title" />
                 </div>
-                <div class="card-body">
-                    @if (!column.Cards.Any())
-                    {
-                        <p class="text-muted">Henüz kart yok.</p>
-                    }
-                    else
-                    {
-                        foreach (var card in column.Cards.OrderBy(c => c.DueDate ?? c.CreatedOn))
+                <button type="submit" class="btn btn-primary">Güncelle</button>
+            }
+        </div>
+        <div class="col-md-4 text-right">
+            @using (Html.BeginForm("Reset", "Kanban", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Panoyu sıfırlamak istediğinizden emin misiniz?');">Panoyu Sıfırla</button>
+            }
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">Yeni Sütun Ekle</div>
+        <div class="card-body">
+            @using (Html.BeginForm("AddColumn", "Kanban", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <div class="form-row row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Sütun Adı</label>
+                            <input type="text" name="name" class="form-control" required />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>WIP Limiti (opsiyonel)</label>
+                            <input type="number" name="workInProgressLimit" class="form-control" min="0" />
+                        </div>
+                    </div>
+                    <div class="col-md-2 align-self-end">
+                        <button type="submit" class="btn btn-success btn-block">Ekle</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="kanban-board row">
+        @foreach (var column in Model.Columns)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>@column.Name</strong>
+                            @if (column.WorkInProgressLimit.HasValue)
+                            {
+                                <span class="badge badge-info ml-2">WIP: @column.Cards.Count / @column.WorkInProgressLimit</span>
+                            }
+                        </div>
+                        <span class="badge badge-secondary">@column.Cards.Count</span>
+                    </div>
+                    <div class="card-body">
+                        @if (!column.Cards.Any())
                         {
-                            <div class="card mb-3 shadow-sm kanban-card">
-                                <div class="card-body">
-                                    <h5 class="card-title">@card.Title</h5>
-                                    @if (!string.IsNullOrWhiteSpace(card.Description))
-                                    {
-                                        <p class="card-text">@card.Description</p>
-                                    }
-                                    <p class="card-text"><small class="text-muted">Oluşturulma: @card.CreatedOn.ToString("dd.MM.yyyy")</small></p>
-                                    @if (!string.IsNullOrWhiteSpace(card.Owner))
-                                    {
-                                        <p class="card-text"><small>Sorumlu: @card.Owner</small></p>
-                                    }
-                                    @if (card.DueDate.HasValue)
-                                    {
-                                        <p class="card-text"><small>Termin: @card.DueDate.Value.ToString("dd.MM.yyyy")</small></p>
-                                    }
-                                    <div class="d-flex justify-content-between">
-                                        @using (Html.BeginForm("MoveCard", "Kanban", FormMethod.Post, new { @class = "form-inline" }))
+                            <p class="text-muted">Henüz kart yok.</p>
+                        }
+                        else
+                        {
+                            foreach (var card in column.Cards.OrderBy(c => c.DueDate ?? c.CreatedOn))
+                            {
+                                <div class="card mb-3 shadow-sm kanban-card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">@card.Title</h5>
+                                        @if (!string.IsNullOrWhiteSpace(card.Description))
                                         {
-                                            @Html.AntiForgeryToken()
-                                            <input type="hidden" name="cardId" value="@card.Id" />
-                                            <select name="targetColumnId" class="form-control form-control-sm mr-2">
-                                                @foreach (var targetColumn in Model.Columns)
-                                                {
-                                                    <option value="@targetColumn.Id" @(targetColumn.Id == column.Id ? "selected" : null)>@targetColumn.Name</option>
-                                                }
-                                            </select>
-                                            <button type="submit" class="btn btn-sm btn-outline-primary">Taşı</button>
+                                            <p class="card-text">@card.Description</p>
                                         }
-                                        @using (Html.BeginForm("DeleteCard", "Kanban", FormMethod.Post, new { @class = "form-inline" }))
+                                        <p class="card-text"><small class="text-muted">Oluşturulma: @card.CreatedOn.ToString("dd.MM.yyyy")</small></p>
+                                        @if (!string.IsNullOrWhiteSpace(card.Owner))
                                         {
-                                            @Html.AntiForgeryToken()
-                                            <input type="hidden" name="cardId" value="@card.Id" />
-                                            <button type="submit" class="btn btn-sm btn-outline-danger">Sil</button>
+                                            <p class="card-text"><small>Sorumlu: @card.Owner</small></p>
                                         }
+                                        @if (card.DueDate.HasValue)
+                                        {
+                                            <p class="card-text"><small>Termin: @card.DueDate.Value.ToString("dd.MM.yyyy")</small></p>
+                                        }
+                                        <div class="d-flex justify-content-between">
+                                            @using (Html.BeginForm("MoveCard", "Kanban", FormMethod.Post, new { @class = "form-inline" }))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="cardId" value="@card.Id" />
+                                                <select name="targetColumnId" class="form-control form-control-sm mr-2">
+                                                    @foreach (var targetColumn in Model.Columns)
+                                                    {
+                                                        <option value="@targetColumn.Id" @(targetColumn.Id == column.Id ? "selected" : null)>@targetColumn.Name</option>
+                                                    }
+                                                </select>
+                                                <button type="submit" class="btn btn-sm btn-outline-primary">Taşı</button>
+                                            }
+                                            @using (Html.BeginForm("DeleteCard", "Kanban", FormMethod.Post, new { @class = "form-inline" }))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="cardId" value="@card.Id" />
+                                                <button type="submit" class="btn btn-sm btn-outline-danger">Sil</button>
+                                            }
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            }
                         }
-                    }
 
-                    <hr />
-                    <h5>Yeni Kart</h5>
-                    @using (Html.BeginForm("AddCard", "Kanban", FormMethod.Post))
-                    {
-                        @Html.AntiForgeryToken()
-                        <input type="hidden" name="columnId" value="@column.Id" />
-                        <div class="form-group">
-                            <label>Başlık</label>
-                            <input type="text" name="title" class="form-control" required />
-                        </div>
-                        <div class="form-group">
-                            <label>Açıklama</label>
-                            <textarea name="description" class="form-control" rows="2"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>Sorumlu</label>
-                            <input type="text" name="owner" class="form-control" />
-                        </div>
-                        <div class="form-group">
-                            <label>Termin Tarihi</label>
-                            <input type="date" name="dueDate" class="form-control" />
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-block">Kart Oluştur</button>
-                    }
+                        <hr />
+                        <h5>Yeni Kart</h5>
+                        @using (Html.BeginForm("AddCard", "Kanban", FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="columnId" value="@column.Id" />
+                            <div class="form-group">
+                                <label>Başlık</label>
+                                <input type="text" name="title" class="form-control" required />
+                            </div>
+                            <div class="form-group">
+                                <label>Açıklama</label>
+                                <textarea name="description" class="form-control" rows="2"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Sorumlu</label>
+                                <input type="text" name="owner" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label>Termin Tarihi</label>
+                                <input type="date" name="dueDate" class="form-control" />
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Kart Oluştur</button>
+                        }
+                    </div>
                 </div>
             </div>
-        </div>
-    }
-</div>
+        }
+    </div>
+    </div>
 
-<style>
-    .kanban-board {
-        display: flex;
-        flex-wrap: wrap;
-    }
+    <style>
+        .kanban-board {
+            display: flex;
+            flex-wrap: wrap;
+        }
 
-    .kanban-card {
-        border-left: 4px solid #0d6efd;
-    }
+        .kanban-card {
+            border-left: 4px solid #0d6efd;
+        }
 
-    .kanban-card .card-body {
-        padding: 1rem;
-    }
-</style>
+            .kanban-card .card-body {
+                padding: 1rem;
+            }
+    </style>
